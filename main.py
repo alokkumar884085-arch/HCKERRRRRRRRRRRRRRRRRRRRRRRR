@@ -1,18 +1,4 @@
 # =======================================================
-#                    REQUIREMENTS.TXT
-# =======================================================
-"""
-python-telegram-bot==20.7
-pytz==2023.3
-asyncio==3.4.3
-"""
-
-# =======================================================
-#                    MAIN BOT CODE (bot.py)
-# =======================================================
-
-"""
-# =======================================================
 #                    CONFIGURATION
 # =======================================================
 TOKEN = "8960093466:AAH4dnaAZYaPteThN4rGjLk4EK-fg_4R2lI"
@@ -74,7 +60,7 @@ PREMIUM_EMOJIS = {
 #                    GLOBAL STATE
 # =======================================================
 BOT_GLOBALLY_OFF = False
-GC_LINKS = []  # Add your GC links here
+GC_LINKS = []
 folder_messages = {}
 
 # =======================================================
@@ -111,7 +97,7 @@ def owner_only(func):
     async def wrapper(update, context, *args, **kwargs):
         if update.effective_user.id not in OWNER_IDS:
             await update.message.reply_text(
-                f"{PREMIUM_EMOJIS['warning']} **𝐎𝐧𝐥𝐲 𝐎𝐰𝐧𝐞𝐫 𝐂𝐚𝐧 𝐔𝐬𝐞 𝐓𝐡𝐢𝐬 𝐂𝐨𝐦𝐦𝐚𝐧𝐝!** {PREMIUM_EMOJIS['warning']}"
+                f"{PREMIUM_EMOJIS['warning']} **Only Owner Can Use This Command!** {PREMIUM_EMOJIS['warning']}"
             )
             return
         return await func(update, context, *args, **kwargs)
@@ -129,12 +115,12 @@ def admin_only(func):
             member = await context.bot.get_chat_member(chat_id, user_id)
             if member.status not in ['administrator', 'creator']:
                 await update.message.reply_text(
-                    f"{PREMIUM_EMOJIS['warning']} **𝐀𝐝𝐦𝐢𝐧 𝐂𝐨𝐦𝐦𝐚𝐧𝐝 𝐎𝐧𝐥𝐲!** {PREMIUM_EMOJIS['warning']}"
+                    f"{PREMIUM_EMOJIS['warning']} **Admin Command Only!** {PREMIUM_EMOJIS['warning']}"
                 )
                 return
         except Exception as e:
             await update.message.reply_text(
-                f"{PREMIUM_EMOJIS['cross']} **𝐄𝐫𝐫𝐨𝐫: {str(e)}** {PREMIUM_EMOJIS['cross']}"
+                f"{PREMIUM_EMOJIS['cross']} **Error: {str(e)}** {PREMIUM_EMOJIS['cross']}"
             )
             return
         return await func(update, context, *args, **kwargs)
@@ -151,7 +137,7 @@ def check_bot_state(func):
     async def wrapper(update, context, *args, **kwargs):
         if BOT_GLOBALLY_OFF:
             await update.message.reply_text(
-                f"{PREMIUM_EMOJIS['moon']} **𝐁𝐨𝐭 𝐢𝐬 𝐜𝐮𝐫𝐫𝐞𝐧𝐭𝐥𝐲 𝐎𝐅𝐅!** {PREMIUM_EMOJIS['moon']}"
+                f"{PREMIUM_EMOJIS['moon']} **Bot is currently OFF!** {PREMIUM_EMOJIS['moon']}"
             )
             return
         return await func(update, context, *args, **kwargs)
@@ -166,25 +152,25 @@ async def start(update, context):
         return
     
     welcome_text = f"""
-{PREMIUM_EMOJIS['star']}{PREMIUM_EMOJIS['crown']}{PREMIUM_EMOJIS['star']} **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐑𝐈𝐒𝐇𝐔 𝐆𝐀𝐋𝐀𝐗𝐘** {PREMIUM_EMOJIS['star']}{PREMIUM_EMOJIS['crown']}{PREMIUM_EMOJIS['star']}
+{PREMIUM_EMOJIS['star']}{PREMIUM_EMOJIS['crown']}{PREMIUM_EMOJIS['star']} **WELCOME TO RISHU GALAXY** {PREMIUM_EMOJIS['star']}{PREMIUM_EMOJIS['crown']}{PREMIUM_EMOJIS['star']}
 
-{PREMIUM_EMOJIS['sparkle']}{PREMIUM_EMOJIS['fire']}{PREMIUM_EMOJIS['sparkle']} **𝐈'𝐦 𝐑ɪ𝐒ʜ𝐔 𝐆ᴀʟᴀxʏ 𝐁𝐨𝐭** {PREMIUM_EMOJIS['sparkle']}{PREMIUM_EMOJIS['fire']}{PREMIUM_EMOJIS['sparkle']}
+{PREMIUM_EMOJIS['sparkle']}{PREMIUM_EMOJIS['fire']}{PREMIUM_EMOJIS['sparkle']} **I'm Rishu Galaxy Bot** {PREMIUM_EMOJIS['sparkle']}{PREMIUM_EMOJIS['fire']}{PREMIUM_EMOJIS['sparkle']}
 
-{PREMIUM_EMOJIS['gem']} **𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐁𝐲:** 𝐅𝐞𝐚𝐫𝐎𝐟𝐑𝐢𝐬𝐡𝐮 {PREMIUM_EMOJIS['gem']}
+{PREMIUM_EMOJIS['gem']} **Powered By:** FearOfRishu {PREMIUM_EMOJIS['gem']}
 
-{PREMIUM_EMOJIS['rocket']} **𝐁𝐨𝐭 𝐒𝐭𝐚𝐭𝐮𝐬:** {'🟢 𝐎𝐍' if not BOT_GLOBALLY_OFF else '🔴 𝐎𝐅𝐅'}
+{PREMIUM_EMOJIS['rocket']} **Bot Status:** {'🟢 ON' if not BOT_GLOBALLY_OFF else '🔴 OFF'}
 
-📋 **𝐆𝐑𝐎𝐔𝐏 𝐑𝐔𝐋𝐄𝐒:**
-{PREMIUM_EMOJIS['fire']} 𝐍𝐨 𝐀𝐛𝐮𝐬𝐞
-{PREMIUM_EMOJIS['fire']} 𝐍𝐨 𝐒𝐩𝐚𝐦
-{PREMIUM_EMOJIS['fire']} 𝐍𝐨 𝐀𝐝𝐬
-{PREMIUM_EMOJIS['fire']} 𝐍𝐨 𝐍𝐒𝐅𝐖
-{PREMIUM_EMOJIS['fire']} 𝐍𝐨 𝐀𝐛𝐮𝐬𝐢𝐯𝐞 𝐋𝐚𝐧𝐠𝐮𝐚𝐠𝐞
-{PREMIUM_EMOJIS['fire']} 𝐅𝐨𝐥𝐥𝐨𝐰 𝐀𝐝𝐦𝐢𝐧𝐬
+📋 **GROUP RULES:**
+{PREMIUM_EMOJIS['fire']} No Abuse
+{PREMIUM_EMOJIS['fire']} No Spam
+{PREMIUM_EMOJIS['fire']} No Ads
+{PREMIUM_EMOJIS['fire']} No NSFW
+{PREMIUM_EMOJIS['fire']} No Abusive Language
+{PREMIUM_EMOJIS['fire']} Follow Admins
 
-{PREMIUM_EMOJIS['moon']} **𝐓𝐲𝐩𝐞** `/help` **𝐅𝐨𝐫 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬** {PREMIUM_EMOJIS['moon']}
+{PREMIUM_EMOJIS['moon']} **Type** `/help` **For Commands** {PREMIUM_EMOJIS['moon']}
 
-{PREMIUM_EMOJIS['rose']}{PREMIUM_EMOJIS['gold']}{PREMIUM_EMOJIS['rose']} **𝐌𝐚𝐝𝐞 𝐖𝐢𝐭𝐡 ❤️ 𝐁𝐲 𝐑ɪ𝐒ʜ𝐔** {PREMIUM_EMOJIS['rose']}{PREMIUM_EMOJIS['gold']}{PREMIUM_EMOJIS['rose']}
+{PREMIUM_EMOJIS['rose']}{PREMIUM_EMOJIS['gold']}{PREMIUM_EMOJIS['rose']} **Made With ❤️ By Rishu** {PREMIUM_EMOJIS['rose']}{PREMIUM_EMOJIS['gold']}{PREMIUM_EMOJIS['rose']}
 """
     await update.message.reply_text(welcome_text)
 
@@ -197,9 +183,9 @@ async def help_command(update, context):
         return
     
     help_text = f"""
-{PREMIUM_EMOJIS['crown']} **𝐑ɪ𝐒ʜ𝐔 𝐆ᴀʟᴀxʏ 𝐁𝐨𝐭 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬** {PREMIUM_EMOJIS['crown']}
+{PREMIUM_EMOJIS['crown']} **Rishu Galaxy Bot Commands** {PREMIUM_EMOJIS['crown']}
 
-{PREMIUM_EMOJIS['sparkle']} **𝐀𝐝𝐦𝐢𝐧 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬:** {PREMIUM_EMOJIS['sparkle']}
+{PREMIUM_EMOJIS['sparkle']} **Admin Commands:** {PREMIUM_EMOJIS['sparkle']}
 
 {PREMIUM_EMOJIS['muted']} `/mute` - Mute a user (reply to user)
 {PREMIUM_EMOJIS['unmuted']} `/unmute` - Unmute a user (reply to user)
@@ -211,7 +197,7 @@ async def help_command(update, context):
 {PREMIUM_EMOJIS['lock']} `/lock` - Lock group (only admins can send)
 {PREMIUM_EMOJIS['unlock']} `/unlock` - Unlock group (everyone can send)
 
-{PREMIUM_EMOJIS['crown']} **𝐎𝐰𝐧𝐞𝐫 𝐂𝐨𝐦𝐦𝐚𝐧𝐝𝐬:** {PREMIUM_EMOJIS['crown']}
+{PREMIUM_EMOJIS['crown']} **Owner Commands:** {PREMIUM_EMOJIS['crown']}
 
 {PREMIUM_EMOJIS['moon']} `/off` - Turn bot OFF globally
 {PREMIUM_EMOJIS['sun']} `/on` - Turn bot ON globally
@@ -219,14 +205,14 @@ async def help_command(update, context):
 {PREMIUM_EMOJIS['folder']} `/folder` - Show GC links
 {PREMIUM_EMOJIS['unfolder']} `/unfolder` - Remove GC links
 
-📋 **𝐆𝐑𝐎𝐔𝐏 𝐑𝐔𝐋𝐄𝐒:**
-{PREMIUM_EMOJIS['fire']} 𝐍𝐨 𝐀𝐛𝐮𝐬𝐞
-{PREMIUM_EMOJIS['fire']} 𝐍𝐨 𝐒𝐩𝐚𝐦
-{PREMIUM_EMOJIS['fire']} 𝐍𝐨 𝐀𝐝𝐬
-{PREMIUM_EMOJIS['fire']} 𝐍𝐨 𝐍𝐒𝐅𝐖
-{PREMIUM_EMOJIS['fire']} 𝐅𝐨𝐥𝐥𝐨𝐰 𝐀𝐝𝐦𝐢𝐧𝐬
+📋 **GROUP RULES:**
+{PREMIUM_EMOJIS['fire']} No Abuse
+{PREMIUM_EMOJIS['fire']} No Spam
+{PREMIUM_EMOJIS['fire']} No Ads
+{PREMIUM_EMOJIS['fire']} No NSFW
+{PREMIUM_EMOJIS['fire']} Follow Admins
 
-{PREMIUM_EMOJIS['rose']} **𝐌𝐚𝐝𝐞 𝐖𝐢𝐭𝐡 ❤️ 𝐁𝐲 𝐑ɪ𝐒ʜ𝐔** {PREMIUM_EMOJIS['rose']}
+{PREMIUM_EMOJIS['rose']} **Made With ❤️ By Rishu** {PREMIUM_EMOJIS['rose']}
 """
     await update.message.reply_text(help_text)
 
@@ -258,26 +244,26 @@ async def welcome_new_member(update, context):
         user_mention = f"[{first_name}](tg://user?id={new_member.id})"
         
         welcome_message = f"""
-{PREMIUM_EMOJIS['welcome']}{PREMIUM_EMOJIS['party']}{PREMIUM_EMOJIS['welcome']} **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐑𝐈𝐒𝐇𝐔 𝐆𝐀𝐋𝐀𝐗𝐘** {PREMIUM_EMOJIS['welcome']}{PREMIUM_EMOJIS['party']}{PREMIUM_EMOJIS['welcome']}
+{PREMIUM_EMOJIS['welcome']}{PREMIUM_EMOJIS['party']}{PREMIUM_EMOJIS['welcome']} **WELCOME TO RISHU GALAXY** {PREMIUM_EMOJIS['welcome']}{PREMIUM_EMOJIS['party']}{PREMIUM_EMOJIS['welcome']}
 
-{PREMIUM_EMOJIS['star']} **𝐖𝐞𝐥𝐜𝐨𝐦𝐞 {user_mention}** {PREMIUM_EMOJIS['star']}
+{PREMIUM_EMOJIS['star']} **Welcome {user_mention}** {PREMIUM_EMOJIS['star']}
 
-{PREMIUM_EMOJIS['gem']} **𝐍𝐚𝐦𝐞:** {first_name} {PREMIUM_EMOJIS['gem']}
-{PREMIUM_EMOJIS['glow']} **𝐔𝐬𝐞𝐫𝐧𝐚𝐦𝐞:** {username} {PREMIUM_EMOJIS['glow']}
-{PREMIUM_EMOJIS['sun']} **𝐃𝐚𝐲:** {day_str} {PREMIUM_EMOJIS['sun']}
-{PREMIUM_EMOJIS['moon']} **𝐓𝐢𝐦𝐞:** {time_str} {date_str} {PREMIUM_EMOJIS['moon']}
-{PREMIUM_EMOJIS['galaxy']} **𝐆𝐫𝐨𝐮𝐩:** {group_name} {PREMIUM_EMOJIS['galaxy']}
+{PREMIUM_EMOJIS['gem']} **Name:** {first_name} {PREMIUM_EMOJIS['gem']}
+{PREMIUM_EMOJIS['glow']} **Username:** {username} {PREMIUM_EMOJIS['glow']}
+{PREMIUM_EMOJIS['sun']} **Day:** {day_str} {PREMIUM_EMOJIS['sun']}
+{PREMIUM_EMOJIS['moon']} **Time:** {time_str} {date_str} {PREMIUM_EMOJIS['moon']}
+{PREMIUM_EMOJIS['galaxy']} **Group:** {group_name} {PREMIUM_EMOJIS['galaxy']}
 
-{PREMIUM_EMOJIS['sparkle']} **𝐆𝐫𝐨𝐮𝐩 𝐑𝐮𝐥𝐞𝐬:** {PREMIUM_EMOJIS['sparkle']}
-{PREMIUM_EMOJIS['fire']} • 𝐍𝐨 𝐀𝐛𝐮𝐬𝐞
-{PREMIUM_EMOJIS['fire']} • 𝐍𝐨 𝐒𝐩𝐚𝐦
-{PREMIUM_EMOJIS['fire']} • 𝐍𝐨 𝐀𝐝𝐬
-{PREMIUM_EMOJIS['fire']} • 𝐍𝐨 𝐍𝐒𝐅𝐖
-{PREMIUM_EMOJIS['fire']} • 𝐅𝐨𝐥𝐥𝐨𝐰 𝐀𝐝𝐦𝐢𝐧𝐬
+{PREMIUM_EMOJIS['sparkle']} **Group Rules:** {PREMIUM_EMOJIS['sparkle']}
+{PREMIUM_EMOJIS['fire']} • No Abuse
+{PREMIUM_EMOJIS['fire']} • No Spam
+{PREMIUM_EMOJIS['fire']} • No Ads
+{PREMIUM_EMOJIS['fire']} • No NSFW
+{PREMIUM_EMOJIS['fire']} • Follow Admins
 
-{PREMIUM_EMOJIS['heart']} **𝐌𝐚𝐝𝐞 𝐖𝐢𝐭𝐡 ❤️ 𝐁𝐲 𝐑ɪ𝐒ʜ𝐔** {PREMIUM_EMOJIS['heart']}
+{PREMIUM_EMOJIS['heart']} **Made With ❤️ By Rishu** {PREMIUM_EMOJIS['heart']}
 
-{PREMIUM_EMOJIS['clap']} **𝐄𝐧𝐣𝐨𝐲 𝐘𝐨𝐮𝐫 𝐒𝐭𝐚𝐲!** {PREMIUM_EMOJIS['clap']}
+{PREMIUM_EMOJIS['clap']} **Enjoy Your Stay!** {PREMIUM_EMOJIS['clap']}
 """
         
         try:
@@ -300,7 +286,7 @@ async def global_off(update, context):
         return
     BOT_GLOBALLY_OFF = True
     await update.message.reply_text(
-        f"{PREMIUM_EMOJIS['moon']} **𝐁𝐨𝐭 𝐓𝐮𝐫𝐧𝐞𝐝 𝐎𝐅𝐅 𝐆𝐥𝐨𝐛𝐚𝐥𝐥𝐲** {PREMIUM_EMOJIS['moon']}"
+        f"{PREMIUM_EMOJIS['moon']} **Bot Turned OFF Globally** {PREMIUM_EMOJIS['moon']}"
     )
 
 @owner_only
@@ -311,7 +297,7 @@ async def global_on(update, context):
         return
     BOT_GLOBALLY_OFF = False
     await update.message.reply_text(
-        f"{PREMIUM_EMOJIS['sun']} **𝐁𝐨𝐭 𝐓𝐮𝐫𝐧𝐞𝐝 𝐎𝐍 𝐆𝐥𝐨𝐛𝐚𝐥𝐥𝐲** {PREMIUM_EMOJIS['sun']}"
+        f"{PREMIUM_EMOJIS['sun']} **Bot Turned ON Globally** {PREMIUM_EMOJIS['sun']}"
     )
 
 # =======================================================
@@ -326,7 +312,7 @@ async def mute(update, context):
         
     if not update.message.reply_to_message:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['warning']} **𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐩𝐥𝐲 𝐭𝐨 𝐚 𝐮𝐬𝐞𝐫'𝐬 𝐦𝐞𝐬𝐬𝐚𝐠𝐞!** {PREMIUM_EMOJIS['warning']}"
+            f"{PREMIUM_EMOJIS['warning']} **Please reply to a user's message!** {PREMIUM_EMOJIS['warning']}"
         )
         return
         
@@ -337,7 +323,7 @@ async def mute(update, context):
         target_member = await context.bot.get_chat_member(chat_id, user.id)
         if target_member.status in ['administrator', 'creator']:
             await update.message.reply_text(
-                f"{PREMIUM_EMOJIS['cross']} **𝐂𝐚𝐧𝐧𝐨𝐭 𝐦𝐮𝐭𝐞 𝐚𝐧 𝐚𝐝𝐦𝐢𝐧/𝐨𝐰𝐧𝐞𝐫!** {PREMIUM_EMOJIS['cross']}"
+                f"{PREMIUM_EMOJIS['cross']} **Cannot mute an admin/owner!** {PREMIUM_EMOJIS['cross']}"
             )
             return
     except:
@@ -350,11 +336,11 @@ async def mute(update, context):
             permissions=ChatPermissions(can_send_messages=False)
         )
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['muted']} **🔇 {user.first_name} 𝐌𝐮𝐭𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲!** {PREMIUM_EMOJIS['muted']}"
+            f"{PREMIUM_EMOJIS['muted']} **🔇 {user.first_name} Muted Successfully!** {PREMIUM_EMOJIS['muted']}"
         )
     except Exception as e:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐦𝐮𝐭𝐞: {str(e)}** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Failed to mute: {str(e)}** {PREMIUM_EMOJIS['cross']}"
         )
 
 # =======================================================
@@ -369,7 +355,7 @@ async def unmute(update, context):
         
     if not update.message.reply_to_message:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['warning']} **𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐩𝐥𝐲 𝐭𝐨 𝐚 𝐮𝐬𝐞𝐫'𝐬 𝐦𝐞𝐬𝐬𝐚𝐠𝐞!** {PREMIUM_EMOJIS['warning']}"
+            f"{PREMIUM_EMOJIS['warning']} **Please reply to a user's message!** {PREMIUM_EMOJIS['warning']}"
         )
         return
         
@@ -389,11 +375,11 @@ async def unmute(update, context):
             )
         )
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['unmuted']} **🔊 {user.first_name} 𝐔𝐧𝐦𝐮𝐭𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲!** {PREMIUM_EMOJIS['unmuted']}"
+            f"{PREMIUM_EMOJIS['unmuted']} **🔊 {user.first_name} Unmuted Successfully!** {PREMIUM_EMOJIS['unmuted']}"
         )
     except Exception as e:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐮𝐧𝐦𝐮𝐭𝐞: {str(e)}** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Failed to unmute: {str(e)}** {PREMIUM_EMOJIS['cross']}"
         )
 
 # =======================================================
@@ -408,7 +394,7 @@ async def kick(update, context):
         
     if not update.message.reply_to_message:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['warning']} **𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐩𝐥𝐲 𝐭𝐨 𝐚 𝐮𝐬𝐞𝐫'𝐬 𝐦𝐞𝐬𝐬𝐚𝐠𝐞!** {PREMIUM_EMOJIS['warning']}"
+            f"{PREMIUM_EMOJIS['warning']} **Please reply to a user's message!** {PREMIUM_EMOJIS['warning']}"
         )
         return
         
@@ -419,7 +405,7 @@ async def kick(update, context):
         target_member = await context.bot.get_chat_member(chat_id, user.id)
         if target_member.status in ['administrator', 'creator']:
             await update.message.reply_text(
-                f"{PREMIUM_EMOJIS['cross']} **𝐂𝐚𝐧𝐧𝐨𝐭 𝐤𝐢𝐜𝐤 𝐚𝐧 𝐚𝐝𝐦𝐢𝐧/𝐨𝐰𝐧𝐞𝐫!** {PREMIUM_EMOJIS['cross']}"
+                f"{PREMIUM_EMOJIS['cross']} **Cannot kick an admin/owner!** {PREMIUM_EMOJIS['cross']}"
             )
             return
     except:
@@ -429,11 +415,11 @@ async def kick(update, context):
         await context.bot.ban_chat_member(chat_id, user.id)
         await context.bot.unban_chat_member(chat_id, user.id)
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['kicked']} **👢 {user.first_name} 𝐊𝐢𝐜𝐤𝐞𝐝 𝐅𝐫𝐨𝐦 𝐆𝐫𝐨𝐮𝐩!** {PREMIUM_EMOJIS['kicked']}"
+            f"{PREMIUM_EMOJIS['kicked']} **👢 {user.first_name} Kicked From Group!** {PREMIUM_EMOJIS['kicked']}"
         )
     except Exception as e:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐤𝐢𝐜𝐤: {str(e)}** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Failed to kick: {str(e)}** {PREMIUM_EMOJIS['cross']}"
         )
 
 # =======================================================
@@ -448,7 +434,7 @@ async def ban(update, context):
         
     if not update.message.reply_to_message:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['warning']} **𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐩𝐥𝐲 𝐭𝐨 𝐚 𝐮𝐬𝐞𝐫'𝐬 𝐦𝐞𝐬𝐬𝐚𝐠𝐞!** {PREMIUM_EMOJIS['warning']}"
+            f"{PREMIUM_EMOJIS['warning']} **Please reply to a user's message!** {PREMIUM_EMOJIS['warning']}"
         )
         return
         
@@ -459,7 +445,7 @@ async def ban(update, context):
         target_member = await context.bot.get_chat_member(chat_id, user.id)
         if target_member.status in ['administrator', 'creator']:
             await update.message.reply_text(
-                f"{PREMIUM_EMOJIS['cross']} **𝐂𝐚𝐧𝐧𝐨𝐭 𝐛𝐚𝐧 𝐚𝐧 𝐚𝐝𝐦𝐢𝐧/𝐨𝐰𝐧𝐞𝐫!** {PREMIUM_EMOJIS['cross']}"
+                f"{PREMIUM_EMOJIS['cross']} **Cannot ban an admin/owner!** {PREMIUM_EMOJIS['cross']}"
             )
             return
     except:
@@ -468,11 +454,11 @@ async def ban(update, context):
     try:
         await context.bot.ban_chat_member(chat_id, user.id)
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['banned']} **🚫 {user.first_name} 𝐁𝐚𝐧𝐧𝐞𝐝 𝐅𝐫𝐨𝐦 𝐆𝐫𝐨𝐮𝐩!** {PREMIUM_EMOJIS['banned']}"
+            f"{PREMIUM_EMOJIS['banned']} **🚫 {user.first_name} Banned From Group!** {PREMIUM_EMOJIS['banned']}"
         )
     except Exception as e:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐛𝐚𝐧: {str(e)}** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Failed to ban: {str(e)}** {PREMIUM_EMOJIS['cross']}"
         )
 
 # =======================================================
@@ -487,7 +473,7 @@ async def unban(update, context):
         
     if not update.message.reply_to_message:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['warning']} **𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐩𝐥𝐲 𝐭𝐨 𝐚 𝐮𝐬𝐞𝐫'𝐬 𝐦𝐞𝐬𝐬𝐚𝐠𝐞!** {PREMIUM_EMOJIS['warning']}"
+            f"{PREMIUM_EMOJIS['warning']} **Please reply to a user's message!** {PREMIUM_EMOJIS['warning']}"
         )
         return
         
@@ -497,11 +483,11 @@ async def unban(update, context):
     try:
         await context.bot.unban_chat_member(chat_id, user.id)
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['check']} **✅ {user.first_name} 𝐔𝐧𝐛𝐚𝐧𝐧𝐞𝐝 𝐒𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲!** {PREMIUM_EMOJIS['check']}"
+            f"{PREMIUM_EMOJIS['check']} **✅ {user.first_name} Unbanned Successfully!** {PREMIUM_EMOJIS['check']}"
         )
     except Exception as e:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐮𝐧𝐛𝐚𝐧: {str(e)}** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Failed to unban: {str(e)}** {PREMIUM_EMOJIS['cross']}"
         )
 
 # =======================================================
@@ -516,7 +502,7 @@ async def promote(update, context):
         
     if not update.message.reply_to_message:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['warning']} **𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐩𝐥𝐲 𝐭𝐨 𝐚 𝐮𝐬𝐞𝐫'𝐬 𝐦𝐞𝐬𝐬𝐚𝐠𝐞!** {PREMIUM_EMOJIS['warning']}"
+            f"{PREMIUM_EMOJIS['warning']} **Please reply to a user's message!** {PREMIUM_EMOJIS['warning']}"
         )
         return
         
@@ -525,7 +511,7 @@ async def promote(update, context):
     
     if user.id in OWNER_IDS:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐂𝐚𝐧𝐧𝐨𝐭 𝐩𝐫𝐨𝐦𝐨𝐭𝐞 𝐚𝐧 𝐨𝐰𝐧𝐞𝐫!** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Cannot promote an owner!** {PREMIUM_EMOJIS['cross']}"
         )
         return
     
@@ -542,11 +528,11 @@ async def promote(update, context):
             can_promote_members=False
         )
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['promoted']} **👑 {user.first_name} 𝐏𝐫𝐨𝐦𝐨𝐭𝐞𝐝 𝐭𝐨 𝐀𝐝𝐦𝐢𝐧!** {PREMIUM_EMOJIS['promoted']}"
+            f"{PREMIUM_EMOJIS['promoted']} **👑 {user.first_name} Promoted to Admin!** {PREMIUM_EMOJIS['promoted']}"
         )
     except Exception as e:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐩𝐫𝐨𝐦𝐨𝐭𝐞: {str(e)}** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Failed to promote: {str(e)}** {PREMIUM_EMOJIS['cross']}"
         )
 
 # =======================================================
@@ -561,7 +547,7 @@ async def demote(update, context):
         
     if not update.message.reply_to_message:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['warning']} **𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐩𝐥𝐲 𝐭𝐨 𝐚 𝐮𝐬𝐞𝐫'𝐬 𝐦𝐞𝐬𝐬𝐚𝐠𝐞!** {PREMIUM_EMOJIS['warning']}"
+            f"{PREMIUM_EMOJIS['warning']} **Please reply to a user's message!** {PREMIUM_EMOJIS['warning']}"
         )
         return
         
@@ -570,7 +556,7 @@ async def demote(update, context):
     
     if user.id in OWNER_IDS:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐂𝐚𝐧𝐧𝐨𝐭 𝐝𝐞𝐦𝐨𝐭𝐞 𝐚𝐧 𝐨𝐰𝐧𝐞𝐫!** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Cannot demote an owner!** {PREMIUM_EMOJIS['cross']}"
         )
         return
     
@@ -587,11 +573,11 @@ async def demote(update, context):
             can_promote_members=False
         )
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['demoted']} **⬇️ {user.first_name} 𝐃𝐞𝐦𝐨𝐭𝐞𝐝 𝐅𝐫𝐨𝐦 𝐀𝐝𝐦𝐢𝐧!** {PREMIUM_EMOJIS['demoted']}"
+            f"{PREMIUM_EMOJIS['demoted']} **⬇️ {user.first_name} Demoted From Admin!** {PREMIUM_EMOJIS['demoted']}"
         )
     except Exception as e:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐝𝐞𝐦𝐨𝐭𝐞: {str(e)}** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Failed to demote: {str(e)}** {PREMIUM_EMOJIS['cross']}"
         )
 
 # =======================================================
@@ -618,12 +604,12 @@ async def lock_group(update, context):
             )
         )
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['lock']} **🔒 𝐆𝐫𝐨𝐮𝐩 𝐋𝐨𝐜𝐤𝐞𝐝!** {PREMIUM_EMOJIS['lock']}\n"
-            f"{PREMIUM_EMOJIS['info']} **𝐎𝐧𝐥𝐲 𝐀𝐝𝐦𝐢𝐧𝐬 & 𝐎𝐰𝐧𝐞𝐫 𝐜𝐚𝐧 𝐬𝐞𝐧𝐝 𝐦𝐞𝐬𝐬𝐚𝐠𝐞𝐬** {PREMIUM_EMOJIS['info']}"
+            f"{PREMIUM_EMOJIS['lock']} **🔒 Group Locked!** {PREMIUM_EMOJIS['lock']}\n"
+            f"{PREMIUM_EMOJIS['info']} **Only Admins & Owner can send messages** {PREMIUM_EMOJIS['info']}"
         )
     except Exception as e:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐥𝐨𝐜𝐤: {str(e)}** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Failed to lock: {str(e)}** {PREMIUM_EMOJIS['cross']}"
         )
 
 # =======================================================
@@ -653,12 +639,12 @@ async def unlock_group(update, context):
             )
         )
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['unlock']} **🔓 𝐆𝐫𝐨𝐮𝐩 𝐔𝐧𝐥𝐨𝐜𝐤𝐞𝐝!** {PREMIUM_EMOJIS['unlock']}\n"
-            f"{PREMIUM_EMOJIS['info']} **𝐄𝐯𝐞𝐫𝐲𝐨𝐧𝐞 𝐜𝐚𝐧 𝐧𝐨𝐰 𝐬𝐞𝐧𝐝 𝐦𝐞𝐬𝐬𝐚𝐠𝐞𝐬** {PREMIUM_EMOJIS['info']}"
+            f"{PREMIUM_EMOJIS['unlock']} **🔓 Group Unlocked!** {PREMIUM_EMOJIS['unlock']}\n"
+            f"{PREMIUM_EMOJIS['info']} **Everyone can now send messages** {PREMIUM_EMOJIS['info']}"
         )
     except Exception as e:
         await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['cross']} **𝐅𝐚𝐢𝐥𝐞𝐝 𝐭𝐨 𝐮𝐧𝐥𝐨𝐜𝐤: {str(e)}** {PREMIUM_EMOJIS['cross']}"
+            f"{PREMIUM_EMOJIS['cross']} **Failed to unlock: {str(e)}** {PREMIUM_EMOJIS['cross']}"
         )
 
 # =======================================================
@@ -671,7 +657,7 @@ async def gcs(update, context):
         return
     total = len(GC_LINKS)
     await update.message.reply_text(
-        f"{PREMIUM_EMOJIS['galaxy']} **𝐓𝐨𝐭𝐚𝐥 𝐆𝐂𝐬 ~ {total}** {PREMIUM_EMOJIS['galaxy']}"
+        f"{PREMIUM_EMOJIS['galaxy']} **Total GCs ~ {total}** {PREMIUM_EMOJIS['galaxy']}"
     )
 
 @sudo_only
@@ -683,7 +669,7 @@ async def folder(update, context):
     sent_msgs = []
     for link in GC_LINKS:
         msg = await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['gem']} **𝐆𝐂 ~** {link} {PREMIUM_EMOJIS['gem']}",
+            f"{PREMIUM_EMOJIS['gem']} **GC ~** {link} {PREMIUM_EMOJIS['gem']}",
             disable_web_page_preview=True
         )
         sent_msgs.append(msg.message_id)
@@ -698,7 +684,7 @@ async def unfolder(update, context):
     chat_id = update.effective_chat.id
     if chat_id not in folder_messages:
         return await update.message.reply_text(
-            f"{PREMIUM_EMOJIS['warning']} **𝐋𝐢𝐧𝐤𝐬 𝐀𝐥𝐫𝐞𝐚𝐝𝐲 𝐎𝐟𝐟 ~** {PREMIUM_EMOJIS['warning']}"
+            f"{PREMIUM_EMOJIS['warning']} **Links Already Off ~** {PREMIUM_EMOJIS['warning']}"
         )
     for msg_id in folder_messages[chat_id]:
         try:
@@ -707,7 +693,7 @@ async def unfolder(update, context):
             pass
     del folder_messages[chat_id]
     await update.message.reply_text(
-        f"{PREMIUM_EMOJIS['check']} **𝐋𝐢𝐧𝐤𝐬 𝐃𝐞𝐥𝐞𝐭𝐞𝐝 ~** {PREMIUM_EMOJIS['check']}"
+        f"{PREMIUM_EMOJIS['check']} **Links Deleted ~** {PREMIUM_EMOJIS['check']}"
     )
 
 # =======================================================
@@ -736,17 +722,17 @@ async def left_member_handler(update, context):
     leave_msg_text = (
         f"╔═════════════════╗\n"
         f"{PREMIUM_EMOJIS['galaxy']}{PREMIUM_EMOJIS['sparkle']}{PREMIUM_EMOJIS['galaxy']}                              {PREMIUM_EMOJIS['galaxy']}{PREMIUM_EMOJIS['sparkle']}{PREMIUM_EMOJIS['galaxy']}\n"
-        f"‎           {PREMIUM_EMOJIS['crown']} 𝐑ɪ𝐒ʜ𝐔 !! 𝐆ᴀʟᴀxʏ {PREMIUM_EMOJIS['crown']}\n"
-        f"‎                             \n"
+        f"                 {PREMIUM_EMOJIS['crown']} Rishu !! Galaxy {PREMIUM_EMOJIS['crown']}\n"
+        f"                             \n"
         f"╚═════════════════╝\n"
-        f"{PREMIUM_EMOJIS['gem']} 𝐓ɪᴍᴇ: {time_str} {date_str} {PREMIUM_EMOJIS['gem']}\n"
-        f"{PREMIUM_EMOJIS['sun']} 𝐃ᴀʏ: {day_str} {PREMIUM_EMOJIS['sun']}\n"
-        f"{PREMIUM_EMOJIS['fire']} 𝐍ᴀᴍᴇ: {first_name} {PREMIUM_EMOJIS['fire']}\n"
-        f"{PREMIUM_EMOJIS['glow']} 𝐔sᴇʀɴᴀᴍᴇ: {username} {PREMIUM_EMOJIS['glow']}\n"
-        f"{PREMIUM_EMOJIS['star']} 𝐆ʀᴏᴜᴘ: {group_name} {PREMIUM_EMOJIS['star']}\n"
+        f"{PREMIUM_EMOJIS['gem']} Time: {time_str} {date_str} {PREMIUM_EMOJIS['gem']}\n"
+        f"{PREMIUM_EMOJIS['sun']} Day: {day_str} {PREMIUM_EMOJIS['sun']}\n"
+        f"{PREMIUM_EMOJIS['fire']} Name: {first_name} {PREMIUM_EMOJIS['fire']}\n"
+        f"{PREMIUM_EMOJIS['glow']} Username: {username} {PREMIUM_EMOJIS['glow']}\n"
+        f"{PREMIUM_EMOJIS['star']} Group: {group_name} {PREMIUM_EMOJIS['star']}\n"
         f"╔═════════════════╗\n\n"
-        f"             {PREMIUM_EMOJIS['rocket']} 𝐅ᴇᴀʀ𝐎ғ𝐑ɪ𝐒ʜ𝐔 {PREMIUM_EMOJIS['rocket']}\n\n"
-        f"‎╚═════════════════╝"
+        f"             {PREMIUM_EMOJIS['rocket']} FearOfRishu {PREMIUM_EMOJIS['rocket']}\n\n"
+        f"╚═════════════════╝"
     )
 
     try:
@@ -805,23 +791,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-"""
-
-# =======================================================
-#                    HOW TO RUN
-# =======================================================
-"""
-1. Save the code as bot.py
-2. Create requirements.txt with:
-   python-telegram-bot==20.7
-   pytz==2023.3
-   asyncio==3.4.3
-3. Install requirements: pip install -r requirements.txt
-4. Run: python bot.py
-"""
-
-# =======================================================
-#                    SINGLE FILE DOWNLOAD
-# =======================================================
-# Copy the entire code above and save as bot.py
-# All packages are included in the code
